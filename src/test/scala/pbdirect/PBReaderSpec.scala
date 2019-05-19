@@ -121,5 +121,11 @@ class PBReaderSpec extends WordSpecLike with Matchers {
       val instant = Instant.ofEpochMilli(1499411227777L)
       Array[Byte](8, -127, -55, -2, -34, -47, 43).pbTo[Message] shouldBe Message(instant)
     }
+    "read a message with inner nested type to Protobuf" in {
+      import TestMessages._
+      val bytes = Array[Byte](8, 0, 18, 6, 8, 1, 18, 2, 72, 105)
+      bytes.pbTo[NestedInnerMessage](PBParser.requiredParser(PBReader.prodReader)) shouldBe
+        NestedInnerMessage(0, InnerMessage(1, "Hi"))
+    }
   }
 }

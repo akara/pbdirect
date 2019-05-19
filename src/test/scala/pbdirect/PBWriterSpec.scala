@@ -120,5 +120,10 @@ class PBWriterSpec extends WordSpecLike with Matchers {
       val instant = Instant.ofEpochMilli(1499411227777L)
       Message(instant).toPB shouldBe Array[Byte](8, -127, -55, -2, -34, -47, 43)
     }
+    "write a message with inner nested type to Protobuf" in {
+      import TestMessages._
+      val nested = NestedInnerMessage(0, InnerMessage(1, "Hi"))
+      nested.toPB shouldBe Array[Byte](8, 0, 18, 6, 8, 1, 18, 2, 72, 105)
+    }
   }
 }
